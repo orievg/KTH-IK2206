@@ -12,6 +12,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.security.MessageDigest;
 import java.util.Properties;
 
 /*
@@ -20,7 +21,6 @@ import java.util.Properties;
  */
 
 public class HandshakeMessage extends Properties {
-    
     /*
      * Get the value of a parameter 
      */
@@ -77,4 +77,10 @@ public class HandshakeMessage extends Properties {
         this.loadFromXML(new ByteArrayInputStream(data));
     }
 
+    public void updateDigest(MessageDigest digest) throws IOException {
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        this.storeToXML(byteOutputStream, "test");
+        byte[] bytes = byteOutputStream.toByteArray();
+        digest.update(bytes);
+    }
 };

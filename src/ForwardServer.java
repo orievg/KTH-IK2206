@@ -14,6 +14,7 @@
  */
  
 import java.lang.Integer;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -57,7 +58,11 @@ public class ForwardServer
         fCA.close();
         byte[] encoded64_certUSR = Base64.getEncoder().encode(certU.getEncoded());
         String String64_certUSR = new String(encoded64_certUSR);
-        serverHandshake = new ServerHandshake(handshakeSocket, String64_certUSR, certCA);
+        PrivateKey myKey = HandshakeCrypto.getPrivateKeyFromKeyFile(arguments.get("key"));
+        serverHandshake = new ServerHandshake(handshakeSocket,
+                String64_certUSR,
+                certCA,
+                myKey);
         targetHost = serverHandshake.targetHost;
         targetPort = serverHandshake.targetPort;
         this.sessionEncrypter = serverHandshake.sessionEncrypter;
