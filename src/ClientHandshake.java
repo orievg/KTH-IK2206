@@ -108,7 +108,7 @@ public class ClientHandshake {
 
         //get the current timestamp, format it, encrypt and witht the message
         Timestamp timestamp = new Timestamp(new Date().getTime());
-        byte[] tsbytes = timestamp.toString().substring(0,19).getBytes(StandardCharsets.US_ASCII);
+        byte[] tsbytes = timestamp.toString().substring(0,19).getBytes(StandardCharsets.UTF_8);
         byte[] tsencr = HandshakeCrypto.encrypt(tsbytes,myKey);
         clientFinish.putParameter("TimeStamp", new String(Base64.getEncoder().encode(tsencr)));
         clientFinish.send(handshakeSocket);
